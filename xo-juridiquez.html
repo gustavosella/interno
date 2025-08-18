@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Xô Juridiquês — Coesão, Coerência e Revisão — Gustavo Sella</title>
+  <meta name="description" content="Ferramentas jurídicas do escritório Gustavo Sella." />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
+  <header class="sticky top-0 z-10 backdrop-blur bg-gray-900/80 border-b border-gray-700">
+    <div class="max-w-6xl mx-auto px-4 py-5 flex flex-col gap-4">
+      <div class="flex items-center justify-between gap-3">
+        <a href="index.html" class="flex items-center gap-3">
+          <img src="assets/logo.svg" alt="Logo" class="w-8 h-8" />
+          <h1 class="text-xl md:text-2xl font-bold tracking-tight">Ferramentas — Gustavo Sella</h1>
+        </a>
+        <button id="themeBtn" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium border border-gray-700 bg-gray-900 hover:bg-gray-700">🌙 Escuro</button>
+      </div>
+      <nav class="flex flex-wrap gap-2"><a href="index.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Início</a>
+<a href="busca-jurisprudencia.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Busca Jurisprudência</a>
+<a href="xo-juridiquez.html" class="px-3 py-2 rounded-xl text-sm font-medium bg-amber-500 text-black">Xô Juridiquês</a>
+<a href="assistente-peticao.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Assist. Petição</a>
+<a href="analise-processo.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Análise em Massa</a>
+<a href="assessoria-imprensa.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Assessoria Imprensa</a>
+<a href="filtra-trt.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Filtro CNJs TRT</a>
+<a href="hub-gpt.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Hub GPT</a></nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
+
+    <section class="prose prose-invert max-w-none">
+      <h2 class="text-2xl font-semibold">Xô Juridiquês — Coesão, Coerência e Revisão</h2>
+      <p class="text-gray-300">Revisor de textos jurídicos para linguagem clara e precisão técnica.</p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="https://chatgpt.com/g/g-68a20af021c4819185930fa967b2409c-xo-juridiques-coesao-coerencia-revisao-geral" target="_blank" rel="noreferrer noopener"
+           class="inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium bg-amber-500 text-black hover:bg-amber-400">
+           Abrir no ChatGPT
+        </a>
+        <a href="index.html" class="inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium border border-gray-700 hover:bg-gray-800">
+           ← Voltar ao início
+        </a>
+      </div>
+      <hr class="my-8 border-gray-700" />
+      <h3 class="text-xl font-semibold">Como usar</h3>
+      <ol class="list-decimal list-inside text-gray-300 space-y-1">
+        <li>Clique em “Abrir no ChatGPT”.</li>
+        <li>Autentique-se (se necessário) e siga as instruções do agente.</li>
+        <li>Guarde seus prompts favoritos.</li>
+      </ol>
+      <h3 class="text-xl font-semibold mt-8">Dicas</h3>
+      <ul class="list-disc list-inside text-gray-300 space-y-1">
+        <li>Adapte o contexto com casos reais (omitindo dados sensíveis).</li>
+        <li>Use o histórico para manter consistência nas solicitações.</li>
+        <li>Em tarefas longas, peça um sumário antes da versão final.</li>
+      </ul>
+
+    </section>
+
+  </main>
+
+  <footer class="mt-12 border-t border-gray-700">
+    <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-gray-400">© <span id="year"></span> Gustavo Sella Advocacia — Ferramentas jurídicas.</div>
+  </footer>
+
+  <script>
+    let theme = localStorage.getItem('theme') || 'dark';
+    function applyTheme() {
+      const btn = document.getElementById('themeBtn');
+      if (theme === 'light') {
+        document.body.className = 'min-h-screen bg-gradient-to-b from-[#f7f6f3] to-[#ebe7e1] text-[#2c2c2c]';
+        if(btn) btn.textContent = '☀️ Claro';
+      } else {
+        document.body.className = 'min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100';
+        if(btn) btn.textContent = '🌙 Escuro';
+      }
+      document.getElementById('year').textContent = new Date().getFullYear();
+    }
+    document.getElementById('themeBtn')?.addEventListener('click', () => {
+      theme = theme === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+      applyTheme();
+    });
+    applyTheme();
+  </script>
+</body>
+</html>
