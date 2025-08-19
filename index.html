@@ -1,104 +1,197 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Index — Páginas do Projeto</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    :root { --bg:#0b1220; --card:#111a2e; --text:#e8edf6; --muted:#a9b5cc; --accent:#4f80ff; --bar:#0f1730; --bar-border:rgba(255,255,255,.06); --bar-text:#e8edf6; }
-    body.light { --bg:#f5f7fb; --card:#ffffff; --text:#0b1220; --muted:#55627a; --accent:#3b6cff; --bar:#ffffff; --bar-border:rgba(0,0,0,.08); --bar-text:#0b1220; }
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--text)}
-    .wrap{max-width:1200px;margin:0 auto;padding:16px}
-    .topbar{position:sticky;top:0;z-index:50;background:var(--bar);color:var(--bar-text);border-bottom:1px solid var(--bar-border)}
-    .topbar-inner{display:flex;align-items:center;gap:12px;padding:10px 16px;max-width:1200px;margin:0 auto}
-    .hello{font-weight:700} .weather{font-size:14px;color:var(--muted)} .spacer{flex:1}
-    .theme-toggle{border:1px solid var(--bar-border);background:transparent;color:var(--bar-text);padding:8px 12px;border-radius:10px;cursor:pointer}
-    .hero{display:flex;gap:16px;align-items:center;justify-content:space-between;margin:20px 0 10px}
-    .hero h1{margin:0;font-size:24px}
-    .search{position:relative;max-width:380px;width:100%}
-    .search input{width:100%;padding:10px 12px 10px 36px;border-radius:12px;border:1px solid var(--bar-border);background:var(--card);color:var(--text)}
-    .search i{position:absolute;left:10px;top:10px;color:var(--muted)}
-    .section{margin:18px 0} .section h2{font-size:16px;margin:0 0 10px;color:var(--muted)}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-    .card{background:var(--card);border:1px solid var(--bar-border);border-radius:16px;padding:16px;text-decoration:none;color:inherit;box-shadow:0 6px 14px rgba(0,0,0,.25);transition:transform .2s, box-shadow .2s}
-    body.light .card{box-shadow:0 6px 14px rgba(0,0,0,.08)}
-    .card:hover{transform:translateY(-4px);box-shadow:0 10px 20px rgba(0,0,0,.35)}
-    body.light .card:hover{box-shadow:0 12px 24px rgba(0,0,0,.12)}
-    .card .title{display:flex;align-items:center;gap:10px;margin:2px 0 8px;font-weight:700}
-    .card .desc{color:var(--muted);font-size:13px;min-height:38px}
-    .badge{display:inline-block;border:1px solid var(--bar-border);border-radius:999px;padding:4px 8px;font-size:12px;color:var(--muted)}
-    .footer{margin:26px 0 14px;text-align:center;color:var(--muted);font-size:12px}
-    .hidden{display:none}
-  </style>
-  <script>
-    document.addEventListener('DOMContentLoaded', function(){
-      const THEME_KEY = 'theme_pref_v1'; const body=document.body;
-      function applyTheme(m){ body.classList.toggle('light', m==='light'); localStorage.setItem(THEME_KEY,m); document.getElementById('theme-toggle').innerHTML = m==='light' ? '🌙 Escuro' : '🌞 Claro';}
-      applyTheme(localStorage.getItem(THEME_KEY) || 'dark');
-      document.getElementById('theme-toggle').addEventListener('click', ()=>applyTheme(body.classList.contains('light')?'dark':'light'));
-
-      const saudEl=document.getElementById('saudacao'); const climaEl=document.getElementById('clima');
-      const h=new Date().getHours(); saudEl.textContent=(h<12?'Bom dia':h<18?'Boa tarde':'Boa noite')+'!';
-      const WX_CACHE_KEY='wx_cache_v1';
-      function renderClima(d){try{const cw=d.current_weather;if(!cw)throw 0;climaEl.textContent=`Clima agora: ${cw.temperature}°C, vento ${cw.windspeed} km/h`;}catch{climaEl.textContent='Tempo indisponível';}}
-      function fetchClima(lat,lon){fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`).then(r=>r.json()).then(data=>{try{localStorage.setItem(WX_CACHE_KEY,JSON.stringify({t:Date.now(),lat,lon,data}))}catch{}renderClima(data);}).catch(()=>climaEl.textContent='Tempo indisponível');}
-      try{const c=JSON.parse(localStorage.getItem(WX_CACHE_KEY)||'null'); if(c&&(Date.now()-c.t)<1800000){renderClima(c.data);}}catch{}
-      if(navigator.geolocation){navigator.geolocation.getCurrentPosition(p=>fetchClima(p.coords.latitude,p.coords.longitude),()=>fetchClima(-23.55,-46.63));} else {fetchClima(-23.55,-46.63);}
-
-      const q=document.getElementById('q'); const cards=[...document.querySelectorAll('.card')];
-      function norm(s){return s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');}
-      q.addEventListener('input',()=>{ const v=norm(q.value); cards.forEach(c=>{const hay=norm(c.textContent); c.style.display = hay.includes(v)?'block':'none';}); });
-    });
-  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Início — Gustavo Sella</title>
+  <meta name="description" content="Ferramentas jurídicas do escritório Gustavo Sella." />
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      <div class="hello" id="saudacao">Olá!</div>
-      <div class="weather" id="clima">Carregando clima...</div>
-      <div class="spacer"></div>
-      <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema">🌞 Claro</button>
+<body class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
+  <header class="sticky top-0 z-10 backdrop-blur bg-gray-900/80 border-b border-gray-700">
+    <div class="max-w-6xl mx-auto px-4 py-5 flex flex-col gap-4">
+      <div class="flex items-center justify-between gap-3">
+        <a href="index.html" class="flex items-center gap-3">
+          <img src="assets/logo.svg" alt="Logo" class="w-8 h-8" />
+          <h1 class="text-xl md:text-2xl font-bold tracking-tight">Ferramentas — Gustavo Sella</h1>
+        </a>
+        <button id="themeBtn" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium border border-gray-700 bg-gray-900 hover:bg-gray-700">🌙 Escuro</button>
+      </div>
+      <nav class="flex flex-wrap gap-2"><a href="index.html" class="px-3 py-2 rounded-xl text-sm font-medium bg-amber-500 text-black">Início</a>
+<a href="busca-jurisprudencia.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Busca Jurisprudência</a>
+<a href="xo-juridiquez.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Xô Juridiquês</a>
+<a href="assistente-peticao.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Assist. Petição</a>
+<a href="analise-processo.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Análise em Massa</a>
+<a href="assessoria-imprensa.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Assessoria Imprensa</a>
+<a href="filtra-trt.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Filtro CNJs TRT</a>
+<a href="hub-gpt.html" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-700 hover:bg-gray-800">Hub GPT</a></nav>
     </div>
-  </div>
+  </header>
 
-  <div class="wrap">
-    <div class="hero">
-      <h1>📁 Index — Páginas do Projeto</h1>
-      <div class="search">
-        <i class="fa fa-search"></i>
-        <input id="q" type="search" placeholder="Filtrar páginas…" />
+  <main class="max-w-6xl mx-auto px-4 py-8">
+
+    <div class="flex items-center justify-between gap-3">
+      <p class="text-sm text-gray-300">Use os cards abaixo para acessar as ferramentas.</p>
+      <label class="relative block">
+        <input id="search" placeholder="Buscar..." class="w-60 rounded-2xl border border-gray-700 bg-gray-800 text-gray-100 py-2.5 pl-4 pr-4 text-sm outline-none focus:ring-4 focus:ring-amber-500/30" />
+      </label>
+    </div>
+
+    <div id="cards" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+  <article class="group rounded-2xl border border-gray-700 bg-gray-800 shadow-sm hover:shadow-md overflow-hidden">
+    <div class="p-5">
+      <h2 class="text-lg font-semibold leading-snug text-white">
+        <a href="busca-jurisprudencia.html" class="hover:underline decoration-2 underline-offset-4">Busca Jurisprudência — GustavoSella.adv</a>
+      </h2>
+      <p class="mt-2 text-sm text-gray-300">Pesquisador de jurisprudência (STF, STJ, TST, TRFs, TRTs, TJs).</p>
+    </div>
+    <div class="flex gap-2 p-5 pt-0">
+      <a href="busca-jurisprudencia.html" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium bg-amber-500 text-black hover:bg-amber-400">Abrir</a>
+      <a href="https://chatgpt.com/g/g-68a214972fbc8191a171606ea6c9363b-busca-jurisprudencia-gustavosella-adv" target="_blank" rel="noreferrer noopener" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium border border-gray-700 hover:bg-gray-800">Abrir no ChatGPT</a>
+    </div>
+  </article>
+
+
+  <article class="group rounded-2xl border border-gray-700 bg-gray-800 shadow-sm hover:shadow-md overflow-hidden">
+    <div class="p-5">
+      <h2 class="text-lg font-semibold leading-snug text-white">
+        <a href="xo-juridiquez.html" class="hover:underline decoration-2 underline-offset-4">Xô Juridiquês — Revisão Geral</a>
+      </h2>
+      <p class="mt-2 text-sm text-gray-300">Revisor de textos jurídicos: linguagem clara e adequada ao CPC.</p>
+    </div>
+    <div class="flex gap-2 p-5 pt-0">
+      <a href="xo-juridiquez.html" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium bg-amber-500 text-black hover:bg-amber-400">Abrir</a>
+      <a href="https://chatgpt.com/g/g-68a20af021c4819185930fa967b2409c-xo-juridiques-coesao-coerencia-revisao-geral" target="_blank" rel="noreferrer noopener" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium border border-gray-700 hover:bg-gray-800">Abrir no ChatGPT</a>
+    </div>
+  </article>
+
+
+  <article class="group rounded-2xl border border-gray-700 bg-gray-800 shadow-sm hover:shadow-md overflow-hidden">
+    <div class="p-5">
+      <h2 class="text-lg font-semibold leading-snug text-white">
+        <a href="assistente-peticao.html" class="hover:underline decoration-2 underline-offset-4">Assistente de Petição Inicial Trabalhista</a>
+      </h2>
+      <p class="mt-2 text-sm text-gray-300">Constrói petições iniciais por etapas e relatório de fundamentos.</p>
+    </div>
+    <div class="flex gap-2 p-5 pt-0">
+      <a href="assistente-peticao.html" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium bg-amber-500 text-black hover:bg-amber-400">Abrir</a>
+      <a href="https://chatgpt.com/g/g-68a3219320cc8191950d451e2c133f54-assistente-de-peticao-inicial-trabalhista" target="_blank" rel="noreferrer noopener" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium border border-gray-700 hover:bg-gray-800">Abrir no ChatGPT</a>
+    </div>
+  </article>
+
+
+  <article class="group rounded-2xl border border-gray-700 bg-gray-800 shadow-sm hover:shadow-md overflow-hidden">
+    <div class="p-5">
+      <h2 class="text-lg font-semibold leading-snug text-white">
+        <a href="analise-processo.html" class="hover:underline decoration-2 underline-offset-4">Análise de Processo Trabalhista em Massa</a>
+      </h2>
+      <p class="mt-2 text-sm text-gray-300">Analisa lotes de processos, identifica padrões e prazos.</p>
+    </div>
+    <div class="flex gap-2 p-5 pt-0">
+      <a href="analise-processo.html" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium bg-amber-500 text-black hover:bg-amber-400">Abrir</a>
+      <a href="https://chatgpt.com/g/g-689645dccd708191ac288d87fe252780-analise-processo-trabalhista-em-massa" target="_blank" rel="noreferrer noopener" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium border border-gray-700 hover:bg-gray-800">Abrir no ChatGPT</a>
+    </div>
+  </article>
+
+
+  <article class="group rounded-2xl border border-gray-700 bg-gray-800 shadow-sm hover:shadow-md overflow-hidden">
+    <div class="p-5">
+      <h2 class="text-lg font-semibold leading-snug text-white">
+        <a href="assessoria-imprensa.html" class="hover:underline decoration-2 underline-offset-4">Assessoria de Imprensa (jurídico)</a>
+      </h2>
+      <p class="mt-2 text-sm text-gray-300">Releases, notas oficiais e Q&As em linguagem clara.</p>
+    </div>
+    <div class="flex gap-2 p-5 pt-0">
+      <a href="assessoria-imprensa.html" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium bg-amber-500 text-black hover:bg-amber-400">Abrir</a>
+      <a href="https://chatgpt.com/g/g-689645669ba08191b1602268d3b12f6a-assessoria-de-imprensa" target="_blank" rel="noreferrer noopener" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium border border-gray-700 hover:bg-gray-800">Abrir no ChatGPT</a>
+    </div>
+  </article>
+
+
+  <article class="group rounded-2xl border border-gray-700 bg-gray-800 shadow-sm hover:shadow-md overflow-hidden">
+    <div class="p-5">
+      <h2 class="text-lg font-semibold leading-snug text-white">
+        <a href="filtra-trt.html" class="hover:underline decoration-2 underline-offset-4">Filtra e Gera Links via Certidão do TRT</a>
+      </h2>
+      <p class="mt-2 text-sm text-gray-300">Extrai CNJs de certidões/listas e gera links PJe.</p>
+    </div>
+    <div class="flex gap-2 p-5 pt-0">
+      <a href="filtra-trt.html" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium bg-amber-500 text-black hover:bg-amber-400">Abrir</a>
+      <a href="https://chatgpt.com/g/g-689643b245c08191ab2eeeba52e68557-filtra-e-links-dos-processo-com-a-certidao-do-trt" target="_blank" rel="noreferrer noopener" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium border border-gray-700 hover:bg-gray-800">Abrir no ChatGPT</a>
+    </div>
+  </article>
+
+
+  <article class="group rounded-2xl border border-gray-700 bg-gray-800 shadow-sm hover:shadow-md overflow-hidden">
+    <div class="p-5">
+      <h2 class="text-lg font-semibold leading-snug text-white">
+        <a href="hub-gpt.html" class="hover:underline decoration-2 underline-offset-4">GPT Jurídico do Gustavo Sella (Hub)</a>
+      </h2>
+      <p class="mt-2 text-sm text-gray-300">Hub central dos agentes e fluxos automatizados.</p>
+    </div>
+    <div class="flex gap-2 p-5 pt-0">
+      <a href="hub-gpt.html" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium bg-amber-500 text-black hover:bg-amber-400">Abrir</a>
+      <a href="https://chatgpt.com/g/g-crQAphKXp-gpt-juridico-do-gustavo-sella" target="_blank" rel="noreferrer noopener" class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium border border-gray-700 hover:bg-gray-800">Abrir no ChatGPT</a>
+    </div>
+  </article>
+
+    </div>
+
+    <script>
+      const cards = Array.from(document.querySelectorAll('#cards article'));
+      const input = document.getElementById('search');
+      function filter() {
+        const q = (input.value||'').toLowerCase();
+        cards.forEach(card => {
+          const text = card.textContent.toLowerCase();
+          card.style.display = text.includes(q) ? '' : 'none';
+        });
+      }
+      input.addEventListener('input', filter);
+    </script>
+
+    <div class="mt-10 grid md:grid-cols-2 gap-5">
+      <div class="rounded-2xl border border-gray-700 bg-gray-800 p-6 shadow-sm">
+        <h3 class="text-base font-semibold text-white">Feedback</h3>
+        <p class="mt-1 text-sm text-gray-300">
+          Curtiu, faltou algo ou quer sugerir melhorias? Instagram
+          <a class="font-medium text-amber-400 hover:underline" href="https://instagram.com/gustavosella.adv" target="_blank">@gustavosella.adv</a>.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-gray-700 bg-gray-800 p-6 shadow-sm">
+        <h3 class="text-base font-semibold text-white">Atendimento rápido</h3>
+        <p class="mt-1 text-sm text-gray-300">
+          WhatsApp: <a class="font-medium text-amber-400 hover:underline" href="https://wa.me/5519996660219?text=Ol%C3%A1%2C+vim+do+site+de+ferramentas+jur%C3%ADdicas." target="_blank">(19) 99666-0219</a>
+        </p>
       </div>
     </div>
 
-    <div class="section">
-      <h2>Principais</h2>
-      <div class="grid">
-        <a class="card" href="ferramentas-clt.html">
-          <div class="title"><i class="fa-solid fa-grid-2"></i><span>Ferramentas e Sistemas</span></div>
-          <div class="desc">Hub com links oficiais (ícones + descrições) e slider diário de artigos da CLT.</div>
-          <span class="badge">/ferramentas-clt.html</span>
-        </a>
-        <a class="card" href="tribunais.html">
-          <div class="title"><i class="fa-solid fa-scale-balanced"></i><span>Tribunais do Brasil</span></div>
-          <div class="desc">Links organizados: TRFs → TRTs → Tribunais Superiores.</div>
-          <span class="badge">/tribunais.html</span>
-        </a>
-        <a class="card" href="banco-prompts.html">
-          <div class="title"><i class="fa-solid fa-lightbulb"></i><span>Banco de Prompts</span></div>
-          <div class="desc">Coleção de prompts jurídicos e produtivos.</div>
-          <span class="badge">/banco-prompts.html</span>
-        </a>
-        <a class="card" href="vademecum.html">
-          <div class="title"><i class="fa-solid fa-book"></i><span>Vade Mecum</span></div>
-          <div class="desc">Atalhos para legislações e súmulas (em construção).</div>
-          <span class="badge">/vademecum.html</span>
-        </a>
-      </div>
-    </div>
+  </main>
 
-    <div class="footer">© <span id="year"></span> Escritório — Index do Projeto.</div>
-  </div>
-  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+  <footer class="mt-12 border-t border-gray-700">
+    <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-gray-400">© <span id="year"></span> Gustavo Sella Advocacia — Ferramentas jurídicas.</div>
+  </footer>
+
+  <script>
+    let theme = localStorage.getItem('theme') || 'dark';
+    function applyTheme() {
+      const btn = document.getElementById('themeBtn');
+      if (theme === 'light') {
+        document.body.className = 'min-h-screen bg-gradient-to-b from-[#f7f6f3] to-[#ebe7e1] text-[#2c2c2c]';
+        if(btn) btn.textContent = '☀️ Claro';
+      } else {
+        document.body.className = 'min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100';
+        if(btn) btn.textContent = '🌙 Escuro';
+      }
+      document.getElementById('year').textContent = new Date().getFullYear();
+    }
+    document.getElementById('themeBtn')?.addEventListener('click', () => {
+      theme = theme === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+      applyTheme();
+    });
+    applyTheme();
+  </script>
 </body>
 </html>
